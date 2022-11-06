@@ -1,8 +1,8 @@
-compiletoflash
 \ #############################################################
 \ #############################################################
-\		TACHYON EXTENSIONS for Mecrisp RP2040
+\		TACHYON EXTENSIONS for gForth
 \			Peter Jakacki 2021
+\ Modified for gForth by Rob Probin 2022
 \ #############################################################
 \ #############################################################
 
@@ -10,6 +10,8 @@ compiletoflash
 : *TACHYON*		." TACHYON Mecrisp extensions " tme U. ." - Peter Jakacki" ;
 
 ( changelogs at end of file )
+
+: --- POSTPONE \ ; immediate
 
 --- Tachyon/Mecrisp version check
 : TME? ( stamp -- )	tme U> IF ."   Needs newer version of Tachyon " QUIT THEN  ;
