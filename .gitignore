@@ -2,3 +2,8 @@
 ignore_me/
 *~
 *.swp
+
+# ignore replit files, if we do run it on replit
+.replit
+replit.nix
+run.fth
