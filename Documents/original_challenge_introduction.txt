@@ -1,0 +1,25 @@
+Peter Jakacki 30 October 2022 03:26 UK time
+
+Forth2020 Programming Challenge #1
+* Are you looking for a challenge and excitement?
+
+* Are you a Forth Padawan learning about "the Forth" and how to use it?
+
+* Are you a competent Forth Knight who has learned "the way of the Forth"
+
+* Are you a Forth Jedi Master skillful in the advanced art of using and teaching the way of the Forth?
+
+* Or have you gone to the dark side of the Forth?!!!
+Well congratulations! Welcome to the ways of the Forth. You are not just another weak-minded Imperial Stormtrooper!
+OBJECTIVES
+
+PADAWAN CLASS
+Write a Hello World program that displays the message as a scrolling message on a serial terminal or equivalent (character LCD etc). The code should print HELLO WORLD! followed by 4 spaces and then after a horizontal scrolling delay it should repeat the message starting from the next character for a total of 16 characters including spaces. Therefore when the end of the string including spaces is reached it should wrap-around back to the start until 16 characters are printed.
+The scrolling effect is achieved by a delay after printing 16 characters and then returning to the start of the same line and advance to the next character in the message for 16 characters with wrap-around.
+
+Here is a link to the full (but incomplete) document describing the challenge.
+https://tinyurl.com/forthfun1
+
+Also:
+https://www.forth2020.org/zoom-meeting/challenge
+
