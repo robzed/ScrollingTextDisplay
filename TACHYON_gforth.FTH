@@ -38,19 +38,25 @@ pub >>				rshift ;
 pub <<				lshift ;
 
 --- compile or stack literal value
-pri LIT				state C@ IF literal, THEN ;
+pri LIT				state C@ IF POSTPONE literal THEN ;
+: token parse-name ;
 pri ASCLIT ( mask -- )		0 token BOUNDS DO 8 << OVER I C@ AND + LOOP NIP LIT  ;
 --- use instead of awkward [CHAR] and CHAR
 pre `				$FF ASCLIT ;
 --- control char literal
 pre ^				$1F ASCLIT ;
 
+( Converts a char to a digit )
+( char -- u true | false )
+\ : digit ` 9 >  ;
 --- IP NOTATION:  IP# 192.168.0.101 .L --- C0A80065
+{
 pre IP#
     token 0 0 2SWAP OVER + SWAP
     DO I C@ DIGIT IF SWAP 10 * + ELSE SWAP 8 << + 0 THEN LOOP
     SWAP 8 << +
 ;
+}
 
 --- Tachyon standard CR is CR only whereas CRLF is CR+LF combo
 pub CR			$0D EMIT ;

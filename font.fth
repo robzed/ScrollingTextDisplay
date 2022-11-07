@@ -1,4 +1,4 @@
-forget *font.fth*   : *font.fth* ;
+\ forget *font.fth*   : *font.fth* ;
 
 create base_chars
 3 c, \ character ' ' added manually
