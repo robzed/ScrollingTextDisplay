@@ -51,6 +51,7 @@
 \ internal - draw a character, no clipping or width setting
 \ addr is address of raw font data, beyond width
 : grNoClipPrint ( addr -- )
+  \ 20 1 XY grWidth @ . FontWidthOffset @ .
   grHeight @ 0> grWidth @ 0> AND IF
      grHeight @ 0 do
       dup
@@ -96,6 +97,7 @@
 : doClipMinY ( addr -- addr' )
   currentY @ clipymin @ -   ( Y < min then negative result - needs clipped by that amount)
   dup 0< IF
+    ." MinY"
     dup grHeight +!    \ subtract the height by that amount
     negate dup
       currentY +!  \ start later on screen
@@ -107,11 +109,11 @@
 
 : doClipMinX ( -- )
   currentX @ clipxmin @ -   ( X < min then negative result - needs clipped by that amount)
-  dup 0< IF
+  dup 0< IF   \ ." MinX"
     dup grWidth +!    \ subtract the width be that amount
-    dup negate
+    negate
        currentX +!      \ increase the currentX by that amount
-       FontWidthOffset  \ make sure it starts further along the bitmap
+       \ FontWidthOffset ! \ make sure it starts further along the bitmap
   ELSE
     drop
   THEN
@@ -120,6 +122,7 @@
 : doClipMaxY ( -- )
   clipymax @ endy -   ( Y < min then postive result - needs clipped by that amount)
   dup 0< IF
+    ." MaxY"
     grHeight +!    \ subtract the height be that amount so we finish earlier
   ELSE
     drop
@@ -128,8 +131,12 @@
 
 : doClipMaxX ( -- )
   clipxmax @ endx -   ( Y < min then postive result - needs clipped by that amount)
+  \ dup ." offset= " . ." endx=" endx . ." clipxmax=" clipxmax @ .
   dup 0< IF
-    grWidth +!    \ subtract the width be that amount
+    \ ." MaxX grWidth=" grWidth ?
+    dup grWidth +!    \ subtract the width be that amount
+    FontWidthOffset !
+    \ grWidth ?
   ELSE
     drop
   THEN
@@ -148,7 +155,7 @@
       grHeight @ swap   \ store height on stack
       \ clip one or two axis
       doClipMinY doClipMaxY
-      doClipMinX doClipMaxY
+      doClipMinX doClipMaxX
       grNoClipPrint
       grHeight ! \ restore height
       0 FontWidthOffset !    \ make sure FontWidthOffset is zero afterwards
@@ -216,7 +223,6 @@
 \   ABY on top line
 \   message on second line
 \   variable width test third line
-\   4 zeros in tests
 : grTest1
   CLS
 
@@ -237,7 +243,10 @@
   cr ." Stack = ".s  cr
 ;
 
+
+\   4 zeros in tests
 : grTest2
+  CLS
   \ tests
   \
   \ Too high
@@ -246,7 +255,7 @@
   grEntirelyOnscreen . space
   ` A grCharPrint
   \ Too high
-  clipxmax @ 2/ clipymax @ 1+ grSetXY
+  clipxmax @ 2/ clipymax @ 2 - grSetXY
   grEntirelyOnscreen . space
   ` A grCharPrint
 
@@ -262,8 +271,83 @@
   cr ." Stack = ".s  cr
 ;
 
-grTest1
+: grTest_minY
+  3 clipymin !
+  20 0 do
+    CLS
+    -10 I + dup
+    1 1 XY ." Y=" .
+    1 clipymin @ XY ." ->"
+    5 swap grSetXY
+    ` A grCharPrint
+    200 ms
+  loop
+  1 20 XY
+  cr ." Stack = ".s  cr
+;
 
+: grTest_maxY
+  10 clipymax !
+  20 0 do
+    CLS
+    I dup
+    1 1 XY ." Y=" .
+    1 clipymax @ XY ." ->"
+    7 swap grSetXY
+    ` A grCharPrint
+    \ 15 1 grSetXY ` * grCharPrint
+    200 ms
+  loop
+  1 20 XY
+  cr ." Stack = ".s  cr
+;
 
-\ todo:
-\   - clipping
+: grTest_minX
+  10 clipxmin !
+  20 0 do
+    CLS
+    3 I + dup
+    1 1 XY ." X=" .
+    clipxmin @ 2 XY ." |"     .s
+
+    5 grSetXY
+    ` A grCharPrint
+    200 ms
+  loop
+  1 20 XY
+  cr ." Stack = ".s  cr
+;
+
+: grTest_maxX
+  10 clipxmax !
+  16 5 do
+    CLS
+    I dup
+    1 1 XY ." X=" .
+    clipxmax @ 2 XY ." |"     .s
+
+    3 grSetXY
+    ` A grCharPrint
+    \ 15 1 grSetXY ` * grCharPrint
+    1000 ms
+  loop
+  1 20 XY
+  cr ." Stack = ".s  cr
+;
+
+: grTest3
+  CLS
+  10 clipxmax !
+  clipxmax @ 2 XY ." |"
+  8 5 grSetXY
+  ` A grCharPrint
+  cr ." Stack = ".s  cr
+;
+
+\ grTest1
+\ grTest2
+\ grTest_minY
+\ grTest_maxY
+grTest_minX
+\ grTest_maxX
+\ grTest3

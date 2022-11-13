@@ -1,5 +1,11 @@
 \ forget *font.fth*   : *font.fth* ;
 
+\ This font is from: https://graphicdesign.stackexchange.com/questions/91478/a-font-thats-readable-with-a-5px-height
+\ The FontStruction “CG pixel 4x5”
+\ (https://fontstruct.com/fontstructions/show/1404171) by “vyznev” is licensed
+\ under a Creative Commons CC0 Public Domain Dedication license
+\ (http://creativecommons.org/publicdomain/zero/1.0/).
+
 create base_chars
 3 c, \ character ' ' added manually
 %00000000 c,
